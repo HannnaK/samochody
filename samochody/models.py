@@ -1,9 +1,9 @@
 from django.db import models
 
 
-class Car(models.Model):
+class Cars(models.Model):
     index = models.PositiveIntegerField(blank=True, primary_key=True)
-    price = models.CharField("cena", max_length=30, blank=True, null=True)
+    price = models.PositiveIntegerField("cena", blank=True, null=True)
     model = models.CharField(max_length=20, blank=True, null=True)
     id_car = models.BigIntegerField("ID samochodu", blank=True, null=True)
     production_year = models.PositiveSmallIntegerField("rok produkcji", blank=True, null=True)
@@ -13,11 +13,11 @@ class Car(models.Model):
     date_ad = models.CharField("data dodania", max_length=20, blank=True, null=True)
     make = models.CharField("marka", max_length=20, blank=True, null=True)
     is_activ = models.BooleanField(blank=True, null=True)
-    new_price = models.CharField("nowa cena", max_length=20, blank=True, null=True)
+    new_price = models.PositiveIntegerField("nowa cena", blank=True, null=True)
 
     def __str__(self):
-        return '{id_car}{model}'.format(id_car=self.id_car, model=self.model)
+        return '{id_car}__{price}'.format(id_car=self.id_car, price=self.price )
 
     class Meta:
         managed = False
-        db_table = 'car'
+        db_table = 'cars'

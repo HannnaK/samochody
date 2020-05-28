@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from .models import Car
-from .forms import CarForm, SearchForm
+from .models import Cars
+from .forms import CarForm
 
 # from rest_framework import generics
 # from rest_framework.response import Response
@@ -12,12 +12,12 @@ def welcome(request):
 
 
 def all_cars(request):
-    all = Car.objects.all().filter(is_activ=True)
+    all = Cars.objects.all().filter(is_activ=True)
     return render(request, 'cars.html', {'cars': all})
 
 
 def one_car(request, index):
-    car = get_object_or_404(Car, pk=index)
+    car = get_object_or_404(Cars, pk=index)
 
     form_car = CarForm(request.POST or None, request.FILES or None, instance=car)
 
@@ -27,15 +27,13 @@ def is_valid_queryparam(param):
     return param != '' and param is not None
 
 def search(request):
-    all = Car.objects.all().filter(is_activ=True)
-    make_set = set(Car.objects.values_list('make'))
+    all = Cars.objects.all().filter(is_activ=True)
+    make_set = set(Cars.objects.values_list('make'))
     make_list=[]
     for _ in make_set:
         make_list.append(_[0])
 
     make_list_sort = sorted(make_list)
-
-
 
     id_car_contains_query = request.GET.get('id_car')
     make_contains_query = request.GET.get('make')
@@ -43,6 +41,10 @@ def search(request):
     year_max = request.GET.get('year_max')
     date_ad_min = request.GET.get('date_ad_min')
     date_ad_max = request.GET.get('date_ad_max')
+    price_min = request.GET.get('price_min')
+    price_max = request.GET.get('price_max')
+    new_price_contains_query = request.GET.get('new_price')
+
 
     if is_valid_queryparam(id_car_contains_query):
         all=all.filter(id_car__exact=id_car_contains_query)
@@ -62,7 +64,18 @@ def search(request):
     if is_valid_queryparam(date_ad_max):
         all = all.filter(date_ad__lte=date_ad_max)
 
+    # if is_valid_queryparam(price_min):
+    #     all = all.filter(price_min__gte=price_min)
+    #
+    # if is_valid_queryparam(price_max):
+    #     all = all.filter(price_max__lte=price_max)
+
+    if is_valid_queryparam(price_min)and is_valid_queryparam(price_max):
+        all = all.filter(price__range=(price_min, price_max))
+
+
     print(len(all))
+
     context = {
         'allcar': all,
         'make': make_list_sort
