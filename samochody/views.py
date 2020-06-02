@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.db import models
 from django.shortcuts import render, get_object_or_404
 from .models import Cars
 from .forms import CarForm
@@ -33,17 +34,24 @@ def search(request):
     for _ in make_set:
         make_list.append(_[0])
 
+    fuel_set = set(Cars.objects.values_list('fuel'))
+    fuel_list = []
+    for _ in fuel_set:
+        fuel_list.append(_[0])
+
     make_list_sort = sorted(make_list)
+    fuel_list_sort = sorted(fuel_list)
 
     id_car_contains_query = request.GET.get('id_car')
     make_contains_query = request.GET.get('make')
+    fuel_contains_query = request.GET.get('fuel')
     year_min = request.GET.get('year_min')
     year_max = request.GET.get('year_max')
     date_ad_min = request.GET.get('date_ad_min')
     date_ad_max = request.GET.get('date_ad_max')
     price_min = request.GET.get('price_min')
     price_max = request.GET.get('price_max')
-    new_price_contains_query = request.GET.get('new_price')
+    new_price = request.GET.get('new_price')
 
 
     if is_valid_queryparam(id_car_contains_query):
@@ -51,6 +59,9 @@ def search(request):
 
     if is_valid_queryparam(make_contains_query) and make_contains_query != 'Wybierz markę':
         all=all.filter(make__icontains=make_contains_query)
+
+    if is_valid_queryparam(fuel_contains_query) and fuel_contains_query != 'Wybierz paliwo':
+        all = all.filter(fuel__exact=fuel_contains_query)
 
     if is_valid_queryparam(year_min):
         all = all.filter(production_year__gte=year_min)
@@ -64,21 +75,28 @@ def search(request):
     if is_valid_queryparam(date_ad_max):
         all = all.filter(date_ad__lte=date_ad_max)
 
-    # if is_valid_queryparam(price_min):
-    #     all = all.filter(price_min__gte=price_min)
-    #
-    # if is_valid_queryparam(price_max):
-    #     all = all.filter(price_max__lte=price_max)
+    if is_valid_queryparam(price_min):
+        all = all.filter(price__gte=price_min)
 
-    if is_valid_queryparam(price_min)and is_valid_queryparam(price_max):
-        all = all.filter(price__range=(price_min, price_max))
+    if is_valid_queryparam(price_max):
+        all = all.filter(price__lte=price_max)
+
+    if new_price == "on":
+        all = all.exclude(new_price=0)
+        all=all.filter(price__gt=models.F('new_price'))
+
+    if new_price == "off":
+        all = all.exclude(new_price=0)
+        all = all.filter(price__lt=models.F('new_price'))
 
 
     print(len(all))
 
+
     context = {
         'allcar': all,
-        'make': make_list_sort
+        'make': make_list_sort,
+        'fuels': fuel_list_sort
     }
 
 

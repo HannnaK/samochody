@@ -3,7 +3,7 @@ from django.db import models
 
 class Cars(models.Model):
     index = models.PositiveIntegerField(blank=True, primary_key=True)
-    price = models.PositiveIntegerField("cena", blank=True, null=True)
+    price = models.IntegerField("cena", blank=True, null=True)
     model = models.CharField(max_length=20, blank=True, null=True)
     id_car = models.BigIntegerField("ID samochodu", blank=True, null=True)
     production_year = models.PositiveSmallIntegerField("rok produkcji", blank=True, null=True)
@@ -16,7 +16,7 @@ class Cars(models.Model):
     new_price = models.PositiveIntegerField("nowa cena", blank=True, null=True)
 
     def __str__(self):
-        return '{id_car}__{price}'.format(id_car=self.id_car, price=self.price )
+        return '{id_car}__{price}'.format(id_car=self.id_car, price=self.price, new_price=self.new_price )
 
     class Meta:
         managed = False
