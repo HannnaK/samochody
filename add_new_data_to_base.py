@@ -7,7 +7,6 @@ makerlist = ['audi-a3', 'audi-a4', 'audi-a5', 'audi-a6', 'Honda', 'Hyundai', 'To
 previous_data = '2020-05-21'
 data = '2020-05-28'
 
-
 old_carlist = []
 try:
     fileName = 'otomoto/csv_files_with_data/allcars' + '-' + previous_data + '.csv'
@@ -15,20 +14,24 @@ try:
     with open(fileName, 'r', newline='') as cars:
         carreader = csv.reader(cars, delimiter=',')
         for car in carreader:
-            car[0]=car[0].replace('\nPLN', '')
-            car[0] = car[0].replace('\nEUR', '')
-            car[0] = car[0].replace(',', '.')
+            car[0] = car[0].replace('\nPLN', '').replace('\nEUR', '').replace(',', '.')
             car[0] = float(car[0])
             car[0] = math.floor(car[0])
             car[0] = int(car[0])
-            car[10]=car[10].replace('\nPLN', '')
+            car[10] = car[10].replace('\nPLN', '')
             car[10] = car[10].replace('\nEUR', '')
             try:
                 car[10] = int(float(car[10]))
             except ValueError:
                 car[10] = 0
-            old_carlist.append(car)
+            car[4] = car[4].replace('km', '').replace(' ', '')
+            try:
+                car[4] = int(car[4])
+            except ValueError:
+                car[4] = None
 
+            old_carlist.append(car)
+            print(type(car[4]))
 except FileNotFoundError:
     pass
 
@@ -55,9 +58,14 @@ for maker in makerlist:
                 car.append(maker)
             car.append(True)
             car.append(0)
+            car[4] = car[4].replace('km', '').replace(' ', '')
+            try:
+                car[4] = int(car[4])
+            except ValueError:
+                car[4] = None
+
             carlist.append(car)
 print(carlist[0])
-
 
 id_new_carlist = []
 for car in carlist:

@@ -47,11 +47,20 @@
         <div class="form-row">
           <div class="form-group col-md-2 col-lg-2">
             <label for="dataMin">Rok produkcji od:</label>
-            <input type="number" min=0 class="form-control" id="dataMin" placeholder="2006" name="year_min">
+            <input type="number" min=0 class="form-control"  id="dataMin" placeholder="Od" name="year_min">
           </div>
           <div class="form-group col-md-2 col-lg-2">
             <label for="dataMax">Rok produkcji do:</label>
-            <input type="number" min=0 class="form-control" id="dataMax" placeholder="2020" name="year_max">
+            <input type="number" min=0 class="form-control" id="dataMax" placeholder="Do" name="year_max">
+          </div>
+
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="priceMin">Cena od:</label>
+            <input type="number" min=0 class="form-control" id="priceMin" placeholder="Od" name="price_min">
+          </div>
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="priceMax">Cena do:</label>
+            <input type="number" min=0 class="form-control" id="priceMax" placeholder="Od" name="price_max">
           </div>
 
           <div class="form-group col-md-2 col-lg-2">
@@ -62,18 +71,19 @@
             <label for="DateAdMax">Data dodania do:</label>
             <input type="date" class="form-control" id="DateAdMax" name="date_ad_max">
           </div>
-        </div>
+       </div>
 
        <div class="form-row">
           <div class="form-group col-md-2 col-lg-2">
-            <label for="priceMin">Cena od:</label>
-            <input type="number" min=0 class="form-control" id="priceMin" name="price_min">
+            <label for="dataMin">Przebieg od:</label>
+            <input type="number" min=0 class="form-control" id="mileageMin" placeholder="Od" name="mileage_min">
           </div>
           <div class="form-group col-md-2 col-lg-2">
-            <label for="priceMax">Cena do:</label>
-            <input type="number" min=0 class="form-control" id="priceMax" name="price_max">
+            <label for="dataMax">Przebieg do:</label>
+            <input type="number" min=0 class="form-control" id="mileageMax" placeholder="Do" name="mileage_max">
           </div>
        </div>
+
         <div class="form-row">
           <div class="form-check">
             <input class="form-check-input" type="radio" id="newPriceH" name="new_price" value="on">
@@ -85,15 +95,12 @@
           </div>
         </div>
 
-
-
-
        <button type="submit" class="btn btn-primary">Szukaj</button>
 
       </form>
 
         {% for car in allcar %}
-        <a href="{% url 'dodatkowe_info' car.index %}"> {{car.price}}--{{car.fuel}}</a>
+        <a href="{% url 'dodatkowe_info' car.index %}"> {{car.price}}--{{car.fuel}}--{{car.mileage}} km</a>
         <br>
         {% endfor %}
 

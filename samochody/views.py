@@ -46,6 +46,8 @@ def search(request):
     year_max = request.GET.get('year_max')
     date_ad_min = request.GET.get('date_ad_min')
     date_ad_max = request.GET.get('date_ad_max')
+    mileage_min = request.GET.get('mileage_min')
+    mileage_max = request.GET.get('mileage_max')
     price_min = request.GET.get('price_min')
     price_max = request.GET.get('price_max')
     new_price = request.GET.get('new_price')
@@ -77,6 +79,12 @@ def search(request):
 
     if is_valid_queryparam(price_max):
         all = all.filter(price__lte=price_max)
+
+    if is_valid_queryparam(mileage_min):
+        all = all.filter(mileage__gte=mileage_min)
+
+    if is_valid_queryparam(mileage_max):
+        all = all.filter(mileage__lte=mileage_max)
 
     if new_price == "on":
         all = all.exclude(new_price=0)
