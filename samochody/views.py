@@ -4,9 +4,6 @@ from django.shortcuts import render, get_object_or_404
 from .models import Cars
 from .forms import CarForm
 
-# from rest_framework import generics
-# from rest_framework.response import Response
-
 
 def welcome(request):
     return render(request, 'home.html')
