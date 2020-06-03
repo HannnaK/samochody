@@ -23,15 +23,16 @@ try:
             try:
                 car[10] = int(float(car[10]))
             except ValueError:
-                car[10] = 0
+                car[10] = None
             car[4] = car[4].replace('km', '').replace(' ', '')
             try:
                 car[4] = int(car[4])
             except ValueError:
                 car[4] = None
+            car[5] = car[5].replace('cm3', '').replace(' ', '')
 
             old_carlist.append(car)
-            print(type(car[4]))
+
 except FileNotFoundError:
     pass
 
@@ -57,13 +58,13 @@ for maker in makerlist:
             else:
                 car.append(maker)
             car.append(True)
-            car.append(0)
+            car.append(None)
             car[4] = car[4].replace('km', '').replace(' ', '')
             try:
                 car[4] = int(car[4])
             except ValueError:
                 car[4] = None
-
+            car[5] = car[5].replace('cm3', '').replace(' ', '')
             carlist.append(car)
 print(carlist[0])
 
@@ -83,9 +84,6 @@ for old_car in old_carlist:
                 carlist.remove(new_car)
             else:
                 old_car[10] = new_car[0]
-                # old_car[10] = float(old_car[10])
-                # old_car[10] = int(old_car[10])
-                # print('2', type(old_car[10]))
                 carlist.remove(new_car)
 
 for car in carlist:
@@ -114,3 +112,4 @@ cars.to_sql("cars", conn)
 
 conn.commit()
 conn.close()
+

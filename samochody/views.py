@@ -44,12 +44,14 @@ def search(request):
     fuel_contains_query = request.GET.get('fuel')
     year_min = request.GET.get('year_min')
     year_max = request.GET.get('year_max')
+    price_min = request.GET.get('price_min')
+    price_max = request.GET.get('price_max')
     date_ad_min = request.GET.get('date_ad_min')
     date_ad_max = request.GET.get('date_ad_max')
     mileage_min = request.GET.get('mileage_min')
     mileage_max = request.GET.get('mileage_max')
-    price_min = request.GET.get('price_min')
-    price_max = request.GET.get('price_max')
+    capacity_min = request.GET.get('capacity_min')
+    capacity_max = request.GET.get('capacity_max')
     new_price = request.GET.get('new_price')
 
 
@@ -64,32 +66,32 @@ def search(request):
 
     if is_valid_queryparam(year_min):
         all = all.filter(production_year__gte=year_min)
-
     if is_valid_queryparam(year_max):
         all = all.filter(production_year__lte=year_max)
 
-    if is_valid_queryparam(date_ad_min):
-        all = all.filter(date_ad__gte=date_ad_min)
-
-    if is_valid_queryparam(date_ad_max):
-        all = all.filter(date_ad__lte=date_ad_max)
-
     if is_valid_queryparam(price_min):
         all = all.filter(price__gte=price_min)
-
     if is_valid_queryparam(price_max):
         all = all.filter(price__lte=price_max)
 
+    if is_valid_queryparam(date_ad_min):
+        all = all.filter(date_ad__gte=date_ad_min)
+    if is_valid_queryparam(date_ad_max):
+        all = all.filter(date_ad__lte=date_ad_max)
+
     if is_valid_queryparam(mileage_min):
         all = all.filter(mileage__gte=mileage_min)
-
     if is_valid_queryparam(mileage_max):
         all = all.filter(mileage__lte=mileage_max)
+
+    if is_valid_queryparam(capacity_min):
+        all = all.filter(capacity__gte=capacity_min)
+    if is_valid_queryparam(capacity_max):
+        all = all.filter(capacity__lte=capacity_max)
 
     if new_price == "on":
         all = all.exclude(new_price=0)
         all=all.filter(price__gt=models.F('new_price'))
-
     if new_price == "off":
         all = all.exclude(new_price=0)
         all = all.filter(price__lt=models.F('new_price'))

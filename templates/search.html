@@ -82,6 +82,14 @@
             <label for="dataMax">Przebieg do:</label>
             <input type="number" min=0 class="form-control" id="mileageMax" placeholder="Do" name="mileage_max">
           </div>
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="dataMin">Pojemność od:</label>
+            <input type="number" min=0 class="form-control" id="capacityMin" placeholder="Od" name="capacity_min">
+          </div>
+          <div class="form-group col-md-2 col-lg-2">
+            <label for="dataMax">Pojemność do:</label>
+            <input type="number" min=0 class="form-control" id="capacityMax" placeholder="Do" name="capacity_max">
+          </div>
        </div>
 
         <div class="form-row">
@@ -99,10 +107,31 @@
 
       </form>
 
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th>Model</th>
+            <th>Cena</th>
+            <th>Nowa cena</th>
+            <th>Rodzaj paliwa</th>
+            <th>Rok produkcji</th>
+            <th>Przebieg</th>
+            <th>Pojemność</th>
+        </tr>
+        </thead>
         {% for car in allcar %}
-        <a href="{% url 'dodatkowe_info' car.index %}"> {{car.price}}--{{car.fuel}}--{{car.mileage}} km</a>
-        <br>
+        <tr>
+            <th> <a href="{% url 'dodatkowe_info' car.index %}"> {{car.model}}</a></th>
+            <th>{{car.price}} pln</th>
+            <th>{% if car.new_price != None %}{{car.new_price}} pln {% endif %}</th>
+            <th>{{car.fuel}}</th>
+            <th>{{car.production_year}}</th>
+            <th>{{car.mileage}} km</th>
+            <th>{{car.capacity}} cm3</th>
+         </tr>
         {% endfor %}
+     </table>
 
     </main>
 {% endblock %}
