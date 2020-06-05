@@ -2,13 +2,14 @@
 {% load bootstrap %}
 {% block tytul %} Wyszukiwanie {% endblock %}
 {% block strona %}
-    <main role="main" class="container">
-      <h3>Wyszukiwanie</h3>
-      <form method="GET" action=".">
+<main role="main" class="container">
+    <h3>Wyszukiwanie</h3>
+    <form method="GET" action=".">
         <div class="form-row">
             <div class="form-group col-12">
                 <div class="input-group">
-                    <input class="form-control py-2 border-right-0 border" type="search" name="id_car" placeholder="ID samochodu" />
+                    <input class="form-control py-2 border-right-0 border" type="search" name="id_car"
+                           placeholder="ID samochodu"/>
                     <span class="input-group-append">
                         <div class="input-group-text bg-transparent">
                             <i class="fa fa-search"></i>
@@ -21,91 +22,104 @@
         <div class="form-row">
             <div class="form-group col-12">
                 <div class="input-group">
-
                     <select id="make" class="form-control" name="make">
                         <option selected>Wybierz markę</option>
-                            {% for mark in make %}
-                                <option value="{{ mark }}">{{ mark }}</option>
-                            {% endfor %}
+                        {% for mark in make %}
+                        <option value="{{ mark }}">{{ mark }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
         </div>
-         <div class="form-row">
+        <div class="form-row">
+            <div class="form-group col-12">
+                <div class="input-group">
+                    <select id="model" class="form-control" name="model">
+                        <option selected>Wybierz model</option>
+                        {% for mod in model%}
+                        <option value="{{mod}}">{{ mod }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
             <div class="form-group col-12">
                 <div class="input-group">
 
                     <select id="fuel" class="form-control" name="fuel">
                         <option selected>Wybierz paliwo</option>
-                            {% for fuel in fuels %}
-                                <option value="{{ fuel}}">{{ fuel }}</option>
-                            {% endfor %}
+                        {% for fuel in fuels %}
+                        <option value="{{fuel}}">{{ fuel }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="dataMin">Rok produkcji od:</label>
-            <input type="number" min=0 class="form-control"  id="dataMin" placeholder="Od" name="year_min">
-          </div>
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="dataMax">Rok produkcji do:</label>
-            <input type="number" min=0 class="form-control" id="dataMax" placeholder="Do" name="year_max">
-          </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="dataMin">Rok produkcji od:</label>
+                <input type="number" min=0 class="form-control" id="dataMin" placeholder="Od" name="year_min">
+            </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="dataMax">Rok produkcji do:</label>
+                <input type="number" min=0 class="form-control" id="dataMax" placeholder="Do" name="year_max">
+            </div>
 
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="priceMin">Cena od:</label>
-            <input type="number" min=0 class="form-control" id="priceMin" placeholder="Od" name="price_min">
-          </div>
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="priceMax">Cena do:</label>
-            <input type="number" min=0 class="form-control" id="priceMax" placeholder="Od" name="price_max">
-          </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="priceMin">Cena od:</label>
+                <input type="number" min=0 class="form-control" id="priceMin" placeholder="Od" name="price_min">
+            </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="priceMax">Cena do:</label>
+                <input type="number" min=0 class="form-control" id="priceMax" placeholder="Od" name="price_max">
+            </div>
 
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="DateAdMin">Data dodania od:</label>
-            <input type="date" class="form-control" id="DateAdMin" name="date_ad_min">
-          </div>
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="DateAdMax">Data dodania do:</label>
-            <input type="date" class="form-control" id="DateAdMax" name="date_ad_max">
-          </div>
-       </div>
-
-       <div class="form-row">
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="dataMin">Przebieg od:</label>
-            <input type="number" min=0 class="form-control" id="mileageMin" placeholder="Od" name="mileage_min">
-          </div>
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="dataMax">Przebieg do:</label>
-            <input type="number" min=0 class="form-control" id="mileageMax" placeholder="Do" name="mileage_max">
-          </div>
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="dataMin">Pojemność od:</label>
-            <input type="number" min=0 class="form-control" id="capacityMin" placeholder="Od" name="capacity_min">
-          </div>
-          <div class="form-group col-md-2 col-lg-2">
-            <label for="dataMax">Pojemność do:</label>
-            <input type="number" min=0 class="form-control" id="capacityMax" placeholder="Do" name="capacity_max">
-          </div>
-       </div>
-
-        <div class="form-row">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" id="newPriceH" name="new_price" value="on">
-              Samochody z obniżoną ceną
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" id="newPriceL" name="new_price" value="off">
-              Samochody z podwyższoną ceną
-          </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="DateAdMin">Data dodania od:</label>
+                <input type="date" class="form-control" id="DateAdMin" name="date_ad_min">
+            </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="DateAdMax">Data dodania do:</label>
+                <input type="date" class="form-control" id="DateAdMax" name="date_ad_max">
+            </div>
         </div>
 
-       <button type="submit" class="btn btn-primary">Szukaj</button>
+        <div class="form-row">
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="dataMin">Przebieg od:</label>
+                <input type="number" min=0 class="form-control" id="mileageMin" placeholder="Od" name="mileage_min">
+            </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="dataMax">Przebieg do:</label>
+                <input type="number" min=0 class="form-control" id="mileageMax" placeholder="Do" name="mileage_max">
+            </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="dataMin">Pojemność od:</label>
+                <input type="number" min=0 class="form-control" id="capacityMin" placeholder="Od" name="capacity_min">
+            </div>
+            <div class="form-group col-md-2 col-lg-2">
+                <label for="dataMax">Pojemność do:</label>
+                <input type="number" min=0 class="form-control" id="capacityMax" placeholder="Do" name="capacity_max">
+            </div>
+        </div>
 
-      </form>
+        <div class="form-row">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="newPriceH" name="new_price" value="on">
+                Samochody z obniżoną ceną
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="newPriceL" name="new_price" value="off">
+                Samochody z podwyższoną ceną
+            </div>
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary">Szukaj</button>
+        <button type="reset" class="btn btn-danger">Resetuj</button>
+
+
 
 
     <table class="table">
@@ -118,20 +132,51 @@
             <th>Rok produkcji</th>
             <th>Przebieg</th>
             <th>Pojemność</th>
+            <th>Data dodania</th>
         </tr>
         </thead>
         {% for car in allcar %}
         <tr>
-            <th> <a href="{% url 'dodatkowe_info' car.index %}"> {{car.model}}</a></th>
+            <th><a href="{% url 'dodatkowe_info' car.index %}"> {{car.model}}</a></th>
             <th>{{car.price}} pln</th>
             <th>{% if car.new_price != None %}{{car.new_price}} pln {% endif %}</th>
             <th>{{car.fuel}}</th>
             <th>{{car.production_year}}</th>
             <th>{{car.mileage}} km</th>
             <th>{{car.capacity}} cm3</th>
-         </tr>
+            <th>{{car.date_ad}}</th>
+        </tr>
         {% endfor %}
-     </table>
+    </table>
+    {% if allcar.has_other_pages %}
+    <ul class="pagination justify-content-center">
+        {% if allcar.has_previous %}
+        <li>
+            <a class="page-link"href="{{ request.path }}?{{params}}&page={{ allcar.previous_page_number }}">Poprzednia</a>
+        </li>
+        {% else %}
+        <li class="disabled"><span class="page-link">Poprzednia</span></li>
+        {% endif %}
 
-    </main>
+
+    {% for n in allcar.paginator.page_range %}
+      {% if allcar.number == n %}
+        <li class="page-item active">
+          <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+        </li>
+      {% elif n > allcar.number|add:'-5' and n < allcar.number|add:'5' %}
+        <li class="page-item"><a class="page-link" href="{{ request.path }}?{{params}}&page={{ n }}">{{ n }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+
+        {% if allcar.has_next %}
+        <li class="page-item"><a class="page-link" href="{{ request.path }}?{{params}}&page={{ allcar.next_page_number }}">Następna</a></li>
+        {% else %}
+        <li class="page-item active"><span class="page-link">Następna</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+        </form>
+</main>
 {% endblock %}

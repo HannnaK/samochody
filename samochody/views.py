@@ -3,14 +3,15 @@ from django.db import models
 from django.shortcuts import render, get_object_or_404
 from .models import Cars
 from .forms import CarForm
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import urllib
 
 def welcome(request):
     return render(request, 'home.html')
 
 
 def all_cars(request):
-    all = Cars.objects.all().filter(is_activ=True)
+    all = Cars.objects.all().filter(is_activ=True).order_by('id')
     return render(request, 'cars.html', {'cars': all})
 
 
@@ -26,21 +27,19 @@ def is_valid_queryparam(param):
 
 def search(request):
     all = Cars.objects.all().filter(is_activ=True)
-    make_set = set(Cars.objects.values_list('make'))
-    make_list=[]
-    for _ in make_set:
-        make_list.append(_[0])
 
-    fuel_set = set(Cars.objects.values_list('fuel'))
-    fuel_list = []
-    for _ in fuel_set:
-        fuel_list.append(_[0])
+    make_set = set(Cars.objects.values_list('make', flat=True))
+    make_set_sort = sorted(make_set)
 
-    make_list_sort = sorted(make_list)
-    fuel_list_sort = sorted(fuel_list)
+    model_set = set(Cars.objects.values_list('model', flat=True))
+    model_set_sort = sorted(model_set)
+
+    fuel_set = set(Cars.objects.values_list('fuel', flat=True))
+    fuel_set_sort = sorted(fuel_set)
 
     id_car_contains_query = request.GET.get('id_car')
     make_contains_query = request.GET.get('make')
+    model_contains_query = request.GET.get('model')
     fuel_contains_query = request.GET.get('fuel')
     year_min = request.GET.get('year_min')
     year_max = request.GET.get('year_max')
@@ -60,6 +59,9 @@ def search(request):
 
     if is_valid_queryparam(make_contains_query) and make_contains_query != 'Wybierz markę':
         all=all.filter(make__icontains=make_contains_query)
+
+    if is_valid_queryparam(model_contains_query) and model_contains_query != 'Wybierz model':
+        all=all.filter(model__exact=model_contains_query)
 
     if is_valid_queryparam(fuel_contains_query) and fuel_contains_query != 'Wybierz paliwo':
         all = all.filter(fuel__exact=fuel_contains_query)
@@ -96,14 +98,26 @@ def search(request):
         all = all.exclude(new_price=0)
         all = all.filter(price__lt=models.F('new_price'))
 
-
     print(len(all))
+    page = request.GET.get('page', 1)
 
+    paginator = Paginator(all, 100)
+    try:
+        all = paginator.page(page)
+    except PageNotAnInteger:
+        all = paginator.page(1)
+    except EmptyPage:
+        all = paginator.page(paginator.num_pages)
+
+    raw_params = request.GET.copy()
+    params = urllib.parse.urlencode(raw_params)
 
     context = {
         'allcar': all,
-        'make': make_list_sort,
-        'fuels': fuel_list_sort
+        'make': make_set_sort,
+        'model': model_set_sort,
+        'fuels': fuel_set_sort,
+        'params': params
     }
 
 
