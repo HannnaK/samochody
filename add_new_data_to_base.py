@@ -4,8 +4,8 @@ import pandas as pd
 import math
 
 makerlist = ['audi-a3', 'audi-a4', 'audi-a5', 'audi-a6', 'Honda', 'Hyundai', 'Toyota']
-previous_data = '2020-05-21'
-data = '2020-05-28'
+previous_data = '2020-05-28'
+data = '2020-06-05'
 
 old_carlist = []
 try:
