@@ -14,29 +14,19 @@ try:
     with open(fileName, 'r', newline='') as cars:
         carreader = csv.reader(cars, delimiter=',')
         for car in carreader:
-            car[0] = car[0].replace('\nPLN', '').replace('\nEUR', '').replace(',', '.')
             car[0] = float(car[0])
             car[0] = math.floor(car[0])
             car[0] = int(car[0])
-            car[10] = car[10].replace('\nPLN', '')
-            car[10] = car[10].replace('\nEUR', '')
-            try:
-                car[10] = int(float(car[10]))
-            except ValueError:
-                car[10] = None
-            car[4] = car[4].replace('km', '').replace(' ', '')
             try:
                 car[4] = int(car[4])
             except ValueError:
                 car[4] = None
-            car[5] = car[5].replace('cm3', '').replace(' ', '')
-
             old_carlist.append(car)
+    print(old_carlist[0])
+    print (type(old_carlist[0][0]))
 
 except FileNotFoundError:
     pass
-
-print(old_carlist[0])
 
 carlist = []
 
@@ -46,12 +36,16 @@ for maker in makerlist:
     with open(fileName, 'r') as cars:
         carreader = csv.reader(cars, delimiter=',')
         for car in carreader:
-            car[0] = car[0].replace('\nPLN', '')
-            car[0] = car[0].replace('\nEUR', '')
-            car[0] = car[0].replace(',', '.')
-            car[0] = float(car[0])
-            car[0] = math.floor(car[0])
-            car[0] = int(car[0])
+
+            car[1] = car[1].split(' ')
+
+            try:
+                for model in car[1]:
+                    del car[1][2]
+            except IndexError:
+                pass
+            car[1] = ' '.join(car[1])
+
             car.append(data)
             if maker == 'audi-a3' or maker == 'audi-a4' or maker == 'audi-a5' or maker == 'audi-a6':
                 car.append('Audi')
@@ -65,9 +59,18 @@ for maker in makerlist:
             except ValueError:
                 car[4] = None
             car[5] = car[5].replace('cm3', '').replace(' ', '')
+
+            car[0] = car[0].split('\n')
+            car.append(car[0][1])
+            car[0] = car[0][0]
+            car[0] = car[0].replace(',', '.')
+            car[0] = float(car[0])
+            car[0] = math.floor(car[0])
+            car[0] = int(car[0])
+
             carlist.append(car)
 print(carlist[0])
-
+print(type(carlist[0][0]))
 id_new_carlist = []
 for car in carlist:
     id_new_carlist.append(car[2])
@@ -100,7 +103,7 @@ with open(current_database, 'w', encoding='utf-8', newline='') as cars:
 cars = pd.read_csv('otomoto/csv_files_with_data/allcars' + '-' + data + '.csv', header=None, encoding='utf-8')
 
 cars.columns = ["price", "model", "id_car", "production_year", "mileage", "capacity", "fuel", "date_ad", 'make',
-                'is_activ', 'new_price']
+                'is_activ', 'new_price', 'currency']
 
 conn = sqlite3.connect('baza.db')
 c = conn.cursor()

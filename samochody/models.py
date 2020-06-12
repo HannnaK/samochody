@@ -14,6 +14,7 @@ class Cars(models.Model):
     make = models.CharField("marka", max_length=20, blank=True, null=True)
     is_activ = models.BooleanField(blank=True, null=True)
     new_price = models.PositiveIntegerField("nowa cena", blank=True, null=True)
+    currency = models.CharField("waluta", max_length=4, blank=True, null=True)
 
     def __str__(self):
         return '{id_car}__{price}'.format(id_car=self.id_car, price=self.price, new_price=self.new_price )

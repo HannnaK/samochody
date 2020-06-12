@@ -11,7 +11,7 @@ def welcome(request):
 
 
 def all_cars(request):
-    all = Cars.objects.all().filter(is_activ=True).order_by('id')
+    all = Cars.objects.all().filter(is_activ=True).order_by('index')
     return render(request, 'cars.html', {'cars': all})
 
 
@@ -26,15 +26,15 @@ def is_valid_queryparam(param):
     return param != '' and param is not None
 
 def search(request):
-    all = Cars.objects.all().filter(is_activ=True)
+    all = Cars.objects.all().filter(is_activ=True).order_by('index')
 
-    make_set = set(Cars.objects.values_list('make', flat=True))
+    make_set = set(Cars.objects.filter(is_activ=True).values_list('make', flat=True))
     make_set_sort = sorted(make_set)
 
-    model_set = set(Cars.objects.values_list('model', flat=True))
+    model_set = set(Cars.objects.filter(is_activ=True).values_list('model', flat=True))
     model_set_sort = sorted(model_set)
 
-    fuel_set = set(Cars.objects.values_list('fuel', flat=True))
+    fuel_set = set(Cars.objects.filter(is_activ=True).values_list('fuel', flat=True))
     fuel_set_sort = sorted(fuel_set)
 
     id_car_contains_query = request.GET.get('id_car')
@@ -58,47 +58,47 @@ def search(request):
         all=all.filter(id_car__exact=id_car_contains_query)
 
     if is_valid_queryparam(make_contains_query) and make_contains_query != 'Wybierz markę':
-        all=all.filter(make__icontains=make_contains_query)
+        all=all.filter(make__icontains=make_contains_query).order_by('index')
 
     if is_valid_queryparam(model_contains_query) and model_contains_query != 'Wybierz model':
-        all=all.filter(model__exact=model_contains_query)
+        all=all.filter(model__exact=model_contains_query).order_by('index')
 
     if is_valid_queryparam(fuel_contains_query) and fuel_contains_query != 'Wybierz paliwo':
-        all = all.filter(fuel__exact=fuel_contains_query)
+        all = all.filter(fuel__exact=fuel_contains_query).order_by('index')
 
     if is_valid_queryparam(year_min):
-        all = all.filter(production_year__gte=year_min)
+        all = all.filter(production_year__gte=year_min).order_by('production_year')
     if is_valid_queryparam(year_max):
-        all = all.filter(production_year__lte=year_max)
+        all = all.filter(production_year__lte=year_max).order_by('production_year')
 
     if is_valid_queryparam(price_min):
-        all = all.filter(price__gte=price_min)
+        all = all.filter(price__gte=price_min).order_by('price')
     if is_valid_queryparam(price_max):
-        all = all.filter(price__lte=price_max)
+        all = all.filter(price__lte=price_max).order_by('price')
 
     if is_valid_queryparam(date_ad_min):
-        all = all.filter(date_ad__gte=date_ad_min)
+        all = all.filter(date_ad__gte=date_ad_min).order_by('date_ad')
     if is_valid_queryparam(date_ad_max):
-        all = all.filter(date_ad__lte=date_ad_max)
+        all = all.filter(date_ad__lte=date_ad_max).order_by('date_ad')
 
     if is_valid_queryparam(mileage_min):
-        all = all.filter(mileage__gte=mileage_min)
+        all = all.filter(mileage__gte=mileage_min).order_by('mileage')
     if is_valid_queryparam(mileage_max):
-        all = all.filter(mileage__lte=mileage_max)
+        all = all.filter(mileage__lte=mileage_max).order_by('mileage')
 
     if is_valid_queryparam(capacity_min):
-        all = all.filter(capacity__gte=capacity_min)
+        all = all.filter(capacity__gte=capacity_min).order_by('capacity')
     if is_valid_queryparam(capacity_max):
-        all = all.filter(capacity__lte=capacity_max)
+        all = all.filter(capacity__lte=capacity_max.order_by('capacity'))
 
     if new_price == "on":
         all = all.exclude(new_price=0)
-        all=all.filter(price__gt=models.F('new_price'))
+        all=all.filter(price__gt=models.F('new_price')).order_by('new_price')
     if new_price == "off":
         all = all.exclude(new_price=0)
-        all = all.filter(price__lt=models.F('new_price'))
+        all = all.filter(price__lt=models.F('new_price')).order_by('new_price')
 
-    print(len(all))
+    number_results = len(all)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(all, 100)
@@ -112,12 +112,17 @@ def search(request):
     raw_params = request.GET.copy()
     params = urllib.parse.urlencode(raw_params)
 
+
+    print(len(all))
+
+
     context = {
         'allcar': all,
         'make': make_set_sort,
         'model': model_set_sort,
         'fuels': fuel_set_sort,
-        'params': params
+        'params': params,
+        'number_results': number_results
     }
 
 

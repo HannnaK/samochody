@@ -2,14 +2,17 @@
 {% load bootstrap %}
 {% block tytul %} Powitanie {% endblock %}
 {% block strona %}
-<h1>Witaj w aplikacji samochody :)</h1>
-<h2>Aplikacja zbudowana na bazie serwisu otomoto</h2>
-<h2> * można sprawdzić od kiedy dane ogłoszenie znajduje się na stronie</h2>
-<h2> * czy zmieniła się cena samochodu od czasu dodania ogłoszenia</h2>
+<br/>
+<main role="main" class="container">
+<h1 class="text-center" style="color:green">Witaj w aplikacji samochody :)</h1>
+<h2 class="text-center">Aplikacja zbudowana na bazie serwisu otomoto</h2>
+<br/>
+<h2 > * można sprawdzić od kiedy dane ogłoszenie znajduje się na stronie</h2>
+<h2 > * czy zmieniła się cena samochodu od czasu dodania ogłoszenia</h2>
 <h2> * dostępne marki: Audi (A3, A4, A5, A6), Honda, Hyundai, Toyota</h2>
 <h2> * baza aktualizowana raz w tygodniu</h2>
-<br>
-<a href="{% url 'wszystkie_samochody' %}">Lista wszystkich samochodów</a>
-<br>
-<a href="{% url 'wyszukiwanie' %}">Wyszukiwanie</a>
+<br/>
+
+<div class="text-center"><a class="btn btn-primary" href="{% url 'wyszukiwanie' %}">Wyszukiwanie</a></div>
+</main>
 {% endblock %}

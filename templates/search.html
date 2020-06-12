@@ -3,6 +3,8 @@
 {% block tytul %} Wyszukiwanie {% endblock %}
 {% block strona %}
 <main role="main" class="container">
+
+    <div class="text-right"><a class="btn btn-primary" href="/">Strona główna</a></div>
     <h3>Wyszukiwanie</h3>
     <form method="GET" action=".">
         <div class="form-row">
@@ -119,7 +121,7 @@
         <button type="submit" class="btn btn-primary">Szukaj</button>
         <button type="reset" class="btn btn-danger">Resetuj</button>
 
-
+        <h2> Ilość wyników: {{number_results}}/100 na stronę</h2>
 
 
     <table class="table">
@@ -127,6 +129,7 @@
         <tr>
             <th>Model</th>
             <th>Cena</th>
+            <th>Waluta</th>
             <th>Nowa cena</th>
             <th>Rodzaj paliwa</th>
             <th>Rok produkcji</th>
@@ -138,8 +141,9 @@
         {% for car in allcar %}
         <tr>
             <th><a href="{% url 'dodatkowe_info' car.index %}"> {{car.model}}</a></th>
-            <th>{{car.price}} pln</th>
-            <th>{% if car.new_price != None %}{{car.new_price}} pln {% endif %}</th>
+            <th>{{car.price}}</th>
+            <th>{{car.currency}}</th>
+            <th>{% if car.new_price != None %}{{car.new_price}}{% endif %}</th>
             <th>{{car.fuel}}</th>
             <th>{{car.production_year}}</th>
             <th>{{car.mileage}} km</th>
@@ -148,6 +152,7 @@
         </tr>
         {% endfor %}
     </table>
+    </form>
     {% if allcar.has_other_pages %}
     <ul class="pagination justify-content-center">
         {% if allcar.has_previous %}
@@ -177,6 +182,6 @@
         {% endif %}
     </ul>
     {% endif %}
-        </form>
+
 </main>
 {% endblock %}
