@@ -4,14 +4,14 @@ import pandas as pd
 import math
 
 makerlist = ['audi-a3', 'audi-a4', 'audi-a5', 'audi-a6', 'Honda', 'Hyundai', 'Toyota']
-previous_data = '2020-05-28'
-data = '2020-06-05'
+previous_data = '2020-06-05'
+data = '2020-06-12'
 
 old_carlist = []
 try:
     fileName = 'otomoto/csv_files_with_data/allcars' + '-' + previous_data + '.csv'
 
-    with open(fileName, 'r', newline='') as cars:
+    with open(fileName, 'r', newline='', encoding='utf-8') as cars:
         carreader = csv.reader(cars, delimiter=',')
         for car in carreader:
             car[0] = float(car[0])

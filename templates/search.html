@@ -1,5 +1,6 @@
 {% extends 'main.html' %}
 {% load bootstrap %}
+
 {% block tytul %} Wyszukiwanie {% endblock %}
 {% block strona %}
 <main role="main" class="container">
@@ -90,31 +91,48 @@
 
         <div class="form-row">
             <div class="form-group col-md-2 col-lg-2">
-                <label for="dataMin">Przebieg od:</label>
+                <label for="mileageMin">Przebieg od:</label>
                 <input type="number" min=0 class="form-control" id="mileageMin" placeholder="Od" name="mileage_min">
             </div>
             <div class="form-group col-md-2 col-lg-2">
-                <label for="dataMax">Przebieg do:</label>
+                <label for="mileageMax"> </label>
                 <input type="number" min=0 class="form-control" id="mileageMax" placeholder="Do" name="mileage_max">
             </div>
             <div class="form-group col-md-2 col-lg-2">
-                <label for="dataMin">Pojemność od:</label>
+                <label for="capacityMin">Pojemność od:</label>
                 <input type="number" min=0 class="form-control" id="capacityMin" placeholder="Od" name="capacity_min">
             </div>
             <div class="form-group col-md-2 col-lg-2">
-                <label for="dataMax">Pojemność do:</label>
+                <label for="capacityMax">Pojemność do:</label>
                 <input type="number" min=0 class="form-control" id="capacityMax" placeholder="Do" name="capacity_max">
             </div>
-        </div>
 
-        <div class="form-row">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="newPriceH" name="new_price" value="on">
-                Samochody z obniżoną ceną
+
+
+            <div class="form-group col-md-2 col-lg-4">
+                <label for="order">Sortuj według:</label>
+                <select class="form-control" id="order" name="order">
+
+                    <option selected>Wybierz sortowanie</option>
+                    <option>Cena</option>
+                    <option>Nowa cena</option>
+                    <option>Rok produkcji</option>
+                    <option>Przebieg</option>
+                    <option>Pojemność</option>
+                    <option>Data dodania</option>
+
+                </select>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="newPriceL" name="new_price" value="off">
-                Samochody z podwyższoną ceną
+
+            <div class="form-row">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="newPriceH" name="new_price" value="on">
+                    Samochody z obniżoną ceną
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="newPriceL" name="new_price" value="off">
+                    Samochody z podwyższoną ceną
+                </div>
             </div>
         </div>
         <br/>
@@ -147,7 +165,7 @@
             <th>{{car.fuel}}</th>
             <th>{{car.production_year}}</th>
             <th>{{car.mileage}} km</th>
-            <th>{{car.capacity}} cm3</th>
+            <th>{% if car.capacity != None %}{{car.capacity}}{% endif %}</th>
             <th>{{car.date_ad}}</th>
         </tr>
         {% endfor %}

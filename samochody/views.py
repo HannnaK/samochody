@@ -20,7 +20,7 @@ def one_car(request, index):
 
     form_car = CarForm(request.POST or None, request.FILES or None, instance=car)
 
-    return render(request, 'car_form.html', {'form': form_car})
+    return render(request, 'car_form.html', {'form_car': form_car})
 
 def is_valid_queryparam(param):
     return param != '' and param is not None
@@ -52,51 +52,73 @@ def search(request):
     capacity_min = request.GET.get('capacity_min')
     capacity_max = request.GET.get('capacity_max')
     new_price = request.GET.get('new_price')
+    order = request.GET.get('order')
 
 
     if is_valid_queryparam(id_car_contains_query):
         all=all.filter(id_car__exact=id_car_contains_query)
 
     if is_valid_queryparam(make_contains_query) and make_contains_query != 'Wybierz markę':
-        all=all.filter(make__icontains=make_contains_query).order_by('index')
+        all=all.filter(make__icontains=make_contains_query)
 
     if is_valid_queryparam(model_contains_query) and model_contains_query != 'Wybierz model':
-        all=all.filter(model__exact=model_contains_query).order_by('index')
+        all=all.filter(model__exact=model_contains_query)
 
     if is_valid_queryparam(fuel_contains_query) and fuel_contains_query != 'Wybierz paliwo':
-        all = all.filter(fuel__exact=fuel_contains_query).order_by('index')
+        all = all.filter(fuel__exact=fuel_contains_query)
 
     if is_valid_queryparam(year_min):
-        all = all.filter(production_year__gte=year_min).order_by('production_year')
+        all = all.filter(production_year__gte=year_min)
     if is_valid_queryparam(year_max):
-        all = all.filter(production_year__lte=year_max).order_by('production_year')
+        all = all.filter(production_year__lte=year_max)
 
     if is_valid_queryparam(price_min):
-        all = all.filter(price__gte=price_min).order_by('price')
+        all = all.filter(price__gte=price_min)
     if is_valid_queryparam(price_max):
-        all = all.filter(price__lte=price_max).order_by('price')
+        all = all.filter(price__lte=price_max)
 
     if is_valid_queryparam(date_ad_min):
-        all = all.filter(date_ad__gte=date_ad_min).order_by('date_ad')
+        all = all.filter(date_ad__gte=date_ad_min)
     if is_valid_queryparam(date_ad_max):
-        all = all.filter(date_ad__lte=date_ad_max).order_by('date_ad')
+        all = all.filter(date_ad__lte=date_ad_max)
 
     if is_valid_queryparam(mileage_min):
-        all = all.filter(mileage__gte=mileage_min).order_by('mileage')
+        all = all.filter(mileage__gte=mileage_min)
     if is_valid_queryparam(mileage_max):
-        all = all.filter(mileage__lte=mileage_max).order_by('mileage')
+        all = all.filter(mileage__lte=mileage_max)
 
     if is_valid_queryparam(capacity_min):
-        all = all.filter(capacity__gte=capacity_min).order_by('capacity')
+        all = all.filter(capacity__gte=capacity_min)
     if is_valid_queryparam(capacity_max):
-        all = all.filter(capacity__lte=capacity_max.order_by('capacity'))
+        all = all.filter(capacity__lte=capacity_max)
 
     if new_price == "on":
         all = all.exclude(new_price=0)
-        all=all.filter(price__gt=models.F('new_price')).order_by('new_price')
+        all=all.filter(price__gt=models.F('new_price'))
     if new_price == "off":
         all = all.exclude(new_price=0)
-        all = all.filter(price__lt=models.F('new_price')).order_by('new_price')
+        all = all.filter(price__lt=models.F('new_price'))
+
+    if order == 'Cena':
+        all = all.order_by('-price')
+
+    if order == 'Nowa cena':
+        all = all.order_by('-new_price')
+
+    if order == 'Rok produkcji':
+        all = all.order_by('-production_year')
+
+    if order == 'Przebieg':
+        all = all.order_by('-mileage')
+
+    if order == 'Pojemność':
+        all = all.order_by('-capacity')
+
+    if order == 'Data dodania':
+        all = all.order_by('-date_ad')
+
+
+
 
     number_results = len(all)
     page = request.GET.get('page', 1)
