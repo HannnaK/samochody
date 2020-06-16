@@ -1,1 +1,1 @@
-web: gunicorn filmy.wsgi --log-file -
+web: gunicorn otomoto.wsgi --log-file -
