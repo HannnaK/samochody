@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.db import models
 from django.shortcuts import render, get_object_or_404
 from .models import Cars
@@ -6,13 +5,9 @@ from .forms import CarForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import urllib
 
+
 def welcome(request):
     return render(request, 'home.html')
-
-
-def all_cars(request):
-    all = Cars.objects.all().filter(is_activ=True).order_by('index')
-    return render(request, 'cars.html', {'cars': all})
 
 
 def one_car(request, index):
@@ -22,8 +17,10 @@ def one_car(request, index):
 
     return render(request, 'car_form.html', {'form_car': form_car})
 
+
 def is_valid_queryparam(param):
     return param != '' and param is not None
+
 
 def search(request):
     all = Cars.objects.all().filter(is_activ=True).order_by('index')
@@ -54,15 +51,14 @@ def search(request):
     new_price = request.GET.get('new_price')
     order = request.GET.get('order')
 
-
     if is_valid_queryparam(id_car_contains_query):
-        all=all.filter(id_car__exact=id_car_contains_query)
+        all = all.filter(id_car__exact=id_car_contains_query)
 
     if is_valid_queryparam(make_contains_query) and make_contains_query != 'Wybierz markę':
-        all=all.filter(make__icontains=make_contains_query)
+        all = all.filter(make__icontains=make_contains_query)
 
     if is_valid_queryparam(model_contains_query) and model_contains_query != 'Wybierz model':
-        all=all.filter(model__exact=model_contains_query)
+        all = all.filter(model__exact=model_contains_query)
 
     if is_valid_queryparam(fuel_contains_query) and fuel_contains_query != 'Wybierz paliwo':
         all = all.filter(fuel__exact=fuel_contains_query)
@@ -94,7 +90,7 @@ def search(request):
 
     if new_price == "on":
         all = all.exclude(new_price=0)
-        all=all.filter(price__gt=models.F('new_price'))
+        all = all.filter(price__gt=models.F('new_price'))
     if new_price == "off":
         all = all.exclude(new_price=0)
         all = all.filter(price__lt=models.F('new_price'))
@@ -117,9 +113,6 @@ def search(request):
     if order == 'Data dodania':
         all = all.order_by('-date_ad')
 
-
-
-
     number_results = len(all)
     page = request.GET.get('page', 1)
 
@@ -134,9 +127,7 @@ def search(request):
     raw_params = request.GET.copy()
     params = urllib.parse.urlencode(raw_params)
 
-
     print(len(all))
-
 
     context = {
         'allcar': all,
@@ -147,6 +138,4 @@ def search(request):
         'number_results': number_results
     }
 
-
     return render(request, 'search.html', context)
-

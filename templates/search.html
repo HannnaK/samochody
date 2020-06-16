@@ -137,7 +137,7 @@
         </div>
         <br/>
         <button type="submit" class="btn btn-primary">Szukaj</button>
-        <button type="reset" class="btn btn-danger">Resetuj</button>
+        <button type="reset" class="btn btn-danger">Wyczyść</button>
 
         <h2> Ilość wyników: {{number_results}}/100 na stronę</h2>
 
@@ -182,15 +182,15 @@
         {% endif %}
 
 
-    {% for n in allcar.paginator.page_range %}
-      {% if allcar.number == n %}
-        <li class="page-item active">
-          <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
-        </li>
-      {% elif n > allcar.number|add:'-5' and n < allcar.number|add:'5' %}
-        <li class="page-item"><a class="page-link" href="{{ request.path }}?{{params}}&page={{ n }}">{{ n }}</a></li>
-      {% endif %}
-    {% endfor %}
+        {% for n in allcar.paginator.page_range %}
+          {% if allcar.number == n %}
+            <li class="page-item active">
+              <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+            </li>
+          {% elif n > allcar.number|add:'-5' and n < allcar.number|add:'5' %}
+            <li class="page-item"><a class="page-link" href="{{ request.path }}?{{params}}&page={{ n }}">{{ n }}</a></li>
+          {% endif %}
+        {% endfor %}
 
 
         {% if allcar.has_next %}

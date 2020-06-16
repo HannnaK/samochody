@@ -2,9 +2,9 @@
 {% load bootstrap %}
 {% block tytul %} Szczegóły {% endblock %}
 {% block strona %}
-     <div style="width: 32rem; float: left; margin-left: 2rem">
-        <h2>Informacje o samochodzie</h2>
+<div style="width: 32rem; float: left; margin-left: 2rem">
+    <h2>Informacje o samochodzie</h2>
     {% csrf_token %}
-        {{ form_car|bootstrap }}
-     </div>
+    {{ form_car|bootstrap }}
+</div>
 {% endblock %}
