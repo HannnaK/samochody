@@ -1,5 +1,6 @@
 import os
-from dj_database_url import parse as dburl, config
+from decouple import config
+from dj_database_url import parse as dburl
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -14,7 +15,7 @@ SECRET_KEY = '%zek6bnjhg9^^a!9kg$b(#^f*crvnt52e&pf#+%3zxpgigjse!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://samochody.herokuapp.com/', 'localhost:8000']
+ALLOWED_HOSTS = ['filmy-django.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -64,9 +65,9 @@ WSGI_APPLICATION = 'otomoto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'baza.db')
 DATABASES = {}
-DATABASES['default'] = config('DATABASE_URL', default=default_dburl)
+DATABASES['default'] = config('DATABASE_URL', default=default_dburl, cast=dburl)
 
 
 
