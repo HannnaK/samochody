@@ -65,15 +65,10 @@ WSGI_APPLICATION = 'otomoto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'baza.db')
-# DATABASES = {}
-# DATABASES['default'] = config('DATABASE_URL', default=default_dburl, cast=dburl)
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'baza.db')
+DATABASES = {}
+DATABASES['default'] = config('DATABASE_URL', default=default_dburl, cast=dburl)
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
