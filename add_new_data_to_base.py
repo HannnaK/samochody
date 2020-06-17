@@ -105,7 +105,7 @@ cars = pd.read_csv('otomoto/csv_files_with_data/allcars' + '-' + data + '.csv', 
 cars.columns = ["price", "model", "id_car", "production_year", "mileage", "capacity", "fuel", "date_ad", 'make',
                 'is_activ', 'new_price', 'currency']
 
-conn = sqlite3.connect('baza.db')
+conn = sqlite3.connect('db.sqlite3')
 c = conn.cursor()
 guery = "DROP TABLE IF EXISTS 'cars'"
 
