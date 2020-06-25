@@ -1,1 +1,0 @@
-web: gunicorn otomoto.wsgi --log-file -
