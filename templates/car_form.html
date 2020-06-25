@@ -5,6 +5,8 @@
 <div style="width: 32rem; float: left; margin-left: 2rem">
     <h2>Informacje o samochodzie</h2>
     {% csrf_token %}
+    {{ form_model|bootstrap }}
     {{ form_car|bootstrap }}
+    {{ form_fuel|bootstrap }}
 </div>
 {% endblock %}
