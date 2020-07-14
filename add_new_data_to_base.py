@@ -4,8 +4,8 @@ import pandas as pd
 import math
 
 makerlist = ['audi-a3', 'audi-a4', 'audi-a5', 'audi-a6', 'Honda', 'Hyundai', 'Toyota']
-previous_data = '2020-06-12'
-data = '2020-06-19'
+previous_data = '2020-07-02'
+data = '2020-07-11'
 
 old_carlist = []
 try:
@@ -23,7 +23,7 @@ try:
                 car[4] = None
             old_carlist.append(car)
     print(old_carlist[0])
-    print(type(old_carlist[0][0]))
+
 
 except FileNotFoundError:
     pass
@@ -79,20 +79,16 @@ for maker in makerlist:
 
             carlist.append(car)
 print(carlist[0])
-print(type(carlist[0][0]))
 
 model_car_sort = sorted(model_car)
 make_car_sort = sorted(make_car)
 fuel_car_sort = sorted(fuel_car)
 
 model_car_dict = {model_car_sort[i]: i for i in range(0, len(model_car_sort))}
-print('model_car_dict', model_car_dict)
 
 make_car_dict = {make_car_sort[i]: i for i in range(0, len(make_car_sort))}
-print('make_car_dict', make_car_dict)
 
 fuel_car_dict = {fuel_car_sort[i]: i for i in range(0, len(fuel_car_sort))}
-print('fuel_car_dict', fuel_car_dict)
 
 for car in carlist:
     car[1] = model_car_dict[car[1]]
@@ -103,7 +99,7 @@ for car in carlist:
 for car in carlist:
     car[6] = fuel_car_dict[car[6]]
 
-print(carlist[0], carlist[15000])
+
 
 id_new_carlist = []
 for car in carlist:

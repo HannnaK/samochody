@@ -133,7 +133,6 @@ def search(request):
     raw_params = request.GET.copy()
     params = urllib.parse.urlencode(raw_params)
 
-    print(len(all))
 
     context = {
         'allcar': all,

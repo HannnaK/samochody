@@ -16,6 +16,3 @@ class FuelForm(ModelForm):
     class Meta:
         model = Fuels
         fields = ["fuel"]
-
-
-
