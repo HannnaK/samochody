@@ -8,7 +8,3 @@ syrena
 csv_files_with_data
 spare
 module
-runtime.txt
-requirements.txt
-requirements-dev.txt
-Procfile
