@@ -2,8 +2,7 @@
 {% load bootstrap %}
 {% block strona %}
 <div style="width: 32rem; float: left; margin-left: 2rem">
-    <input class="btn btn-primary" value="Poprzednia strona" onclick="history.go(-1);"/>
-    <h2>Informacje o samochodzie</h2>
+   <h2> Informacje o samochodzie <input type="button" class="btn btn-primary" value="Powrót" onclick="history.go(-1);"/></h2>
     {% csrf_token %}
     {{ form_car|bootstrap }}
 </div>
