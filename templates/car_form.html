@@ -1,12 +1,10 @@
 {% extends 'main.html' %}
 {% load bootstrap %}
-{% block tytul %} Szczegóły {% endblock %}
 {% block strona %}
 <div style="width: 32rem; float: left; margin-left: 2rem">
+    <input class="btn btn-primary" value="Poprzednia strona" onclick="history.go(-1);"/>
     <h2>Informacje o samochodzie</h2>
     {% csrf_token %}
-    {{ form_model|bootstrap }}
     {{ form_car|bootstrap }}
-    {{ form_fuel|bootstrap }}
 </div>
 {% endblock %}

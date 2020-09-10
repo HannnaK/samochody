@@ -1,10 +1,10 @@
 from django.db import models
 from django.shortcuts import render, get_object_or_404
-from .models import Cars, Makes, Models, Fuels
-from .forms import CarForm, ModelForm, FuelForm
+from .models import Cars
+from .forms import CarForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import urllib
-from django.views.generic import CreateView, UpdateView
+
 
 def welcome(request):
     return render(request, 'home.html')
@@ -12,19 +12,10 @@ def welcome(request):
 
 def one_car(request, index):
     car = get_object_or_404(Cars, pk=index)
-    i_model = get_object_or_404(Models, pk=car.id_model)
-    i_fuel = get_object_or_404(Fuels, pk=car.id_fuel)
 
     form_car = CarForm(request.POST or None, request.FILES or None, instance=car)
-    form_model = ModelForm(request.POST or None, request.FILES or None, instance=i_model)
-    form_fuel = FuelForm(request.POST or None, request.FILES or None, instance=i_fuel)
 
-    context = {'form_car': form_car,
-               'form_model': form_model,
-               'form_fuel': form_fuel
-                }
-
-    return render(request, 'car_form.html', context)
+    return render(request, 'car_form.html', {'form_car': form_car})
 
 
 def is_valid_queryparam(param):
@@ -34,16 +25,19 @@ def is_valid_queryparam(param):
 def search(request):
     all = Cars.objects.all().filter(is_activ=True).order_by('index')
 
-    makes = Makes.objects.all().order_by('index').values_list('index', 'make',  named=True)
+    make_set = set(Cars.objects.filter(is_activ=True).values_list('make', flat=True))
+    make_set_sort = sorted(make_set)
 
-    types = Models.objects.all().order_by('index').values_list('index', 'model', named=True)
+    model_set = set(Cars.objects.filter(is_activ=True).values_list('model', flat=True))
+    model_set_sort = sorted(model_set)
 
-    fuels = Fuels.objects.all().order_by('index').values_list('index', 'fuel', named=True)
+    fuel_set = set(Cars.objects.filter(is_activ=True).values_list('fuel', flat=True))
+    fuel_set_sort = sorted(fuel_set)
 
     id_car_contains_query = request.GET.get('id_car')
-    make_contains_query = request.GET.get('id_make')
-    model_contains_query = request.GET.get('id_model')
-    fuel_contains_query = request.GET.get('id_fuel')
+    make_contains_query = request.GET.get('make')
+    model_contains_query = request.GET.get('model')
+    fuel_contains_query = request.GET.get('fuel')
     year_min = request.GET.get('year_min')
     year_max = request.GET.get('year_max')
     price_min = request.GET.get('price_min')
@@ -61,13 +55,13 @@ def search(request):
         all = all.filter(id_car__exact=id_car_contains_query)
 
     if is_valid_queryparam(make_contains_query) and make_contains_query != 'Wybierz markę':
-        all = all.filter(id_make__exact=make_contains_query)
+        all = all.filter(make__icontains=make_contains_query)
 
     if is_valid_queryparam(model_contains_query) and model_contains_query != 'Wybierz model':
-        all = all.filter(id_model__exact=model_contains_query)
+        all = all.filter(model__exact=model_contains_query)
 
     if is_valid_queryparam(fuel_contains_query) and fuel_contains_query != 'Wybierz paliwo':
-        all = all.filter(id_fuel__exact=fuel_contains_query)
+        all = all.filter(fuel__exact=fuel_contains_query)
 
     if is_valid_queryparam(year_min):
         all = all.filter(production_year__gte=year_min)
@@ -133,12 +127,13 @@ def search(request):
     raw_params = request.GET.copy()
     params = urllib.parse.urlencode(raw_params)
 
+    print(len(all))
 
     context = {
         'allcar': all,
-        'makes': makes,
-        'models': types,
-        'fuels': fuels,
+        'make': make_set_sort,
+        'model': model_set_sort,
+        'fuels': fuel_set_sort,
         'params': params,
         'number_results': number_results
     }

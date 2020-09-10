@@ -111,44 +111,17 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class Fuels(models.Model):
-    index = models.IntegerField(blank=True, primary_key=True)
-    fuel = models.CharField("Rodzaj paliwa", max_length=30, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'fuels'
-
-
-class Makes(models.Model):
-    index = models.IntegerField(blank=True, primary_key=True)
-    make = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'makes'
-
-
-class Models(models.Model):
-    index = models.IntegerField(blank=True, primary_key=True)
-    model = models.CharField(max_length=30, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'models'
-
-
 class Cars(models.Model):
     index = models.PositiveIntegerField(blank=True, primary_key=True)
     price = models.IntegerField("cena", blank=True, null=True)
-    id_model = models.IntegerField(blank=True, null=True)
+    model = models.CharField("model", max_length=20, blank=True, null=True)
     id_car = models.BigIntegerField("ID samochodu", blank=True, null=True)
     production_year = models.PositiveSmallIntegerField("rok produkcji", blank=True, null=True)
     mileage = models.IntegerField("przebieg", blank=True, null=True)
     capacity = models.IntegerField("pojemność", blank=True, null=True)
-    id_fuel = models.IntegerField(blank=True, null=True)
+    fuel = models.CharField("rodzaj paiwa", max_length=20, blank=True, null=True)
     date_ad = models.CharField("data dodania", max_length=20, blank=True, null=True)
-    id_make = models.IntegerField(blank=True, null=True)
+    make = models.CharField("marka", max_length=10, blank=True, null=True)
     is_activ = models.BooleanField(blank=True, null=True)
     new_price = models.PositiveIntegerField("nowa cena", blank=True, null=True)
     currency = models.CharField("waluta", max_length=4, blank=True, null=True)

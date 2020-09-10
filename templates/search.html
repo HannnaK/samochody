@@ -25,10 +25,10 @@
         <div class="form-row">
             <div class="form-group col-12">
                 <div class="input-group">
-                    <select id="id_make" class="form-control" name="id_make">
+                    <select id="make" class="form-control" name="make">
                         <option selected>Wybierz markę</option>
-                        {% for make in makes %}
-                        <option value="{{ make.index }}">{{ make.make }}</option>
+                        {% for mark in make %}
+                        <option value="{{ mark }}">{{ mark }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -37,10 +37,10 @@
         <div class="form-row">
             <div class="form-group col-12">
                 <div class="input-group">
-                    <select id="id_models" class="form-control" name="id_model">
+                    <select id="model" class="form-control" name="model">
                         <option selected>Wybierz model</option>
-                        {% for model in models%}
-                        <option value="{{model.index}}">{{ model.model }}</option>
+                        {% for mod in model%}
+                        <option value="{{mod}}">{{ mod }}</option>
                         {% endfor %}
                     </select>
 
@@ -51,10 +51,10 @@
             <div class="form-group col-12">
                 <div class="input-group">
 
-                    <select id="id_fuel" class="form-control" name="id_fuel">
+                    <select id="fuel" class="form-control" name="fuel">
                         <option selected>Wybierz paliwo</option>
                         {% for fuel in fuels %}
-                        <option value="{{fuel.index}}">{{ fuel.fuel }}</option>
+                        <option value="{{fuel}}">{{ fuel }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -156,27 +156,13 @@
             <th>Data dodania</th>
         </tr>
         </thead>
+        {% for car in allcar %}
         <tr>
-            {% for car in allcar %}
-
-            <th><a href="{% url 'dodatkowe_info' car.index %}">
-                {% for model in models %}
-                    {% if car.id_model == model.index %}
-                        {{model.model}}
-                    {% endif %}
-                {% endfor %}
-                </a>
-            </th>
+            <th><a href="{% url 'dodatkowe_info' car.index %}"> {{car.model}}</a></th>
             <th>{{car.price}}</th>
             <th>{{car.currency}}</th>
             <th>{% if car.new_price != None %}{{car.new_price}}{% endif %}</th>
-            <th>
-                {% for fuel in fuels %}
-                    {% if car.id_fuel == fuel.index %}
-                        {{fuel.fuel}}
-                    {% endif %}
-                {% endfor %}
-            </th>
+            <th>{{car.fuel}}</th>
             <th>{{car.production_year}}</th>
             <th>{{car.mileage}} km</th>
             <th>{% if car.capacity != None %}{{car.capacity}}{% endif %}</th>
