@@ -7,8 +7,8 @@ makerlist = ['audi/a3', 'audi/a4', 'audi/a5', 'audi/a6', 'honda', 'hyundai', 'to
 for maker in makerlist:
 
     path = 'https://www.otomoto.pl/osobowe/uzywane/' + maker + '/od-2006'
-    maker = maker.replace('/','-')
-    print (maker)
+    maker = maker.replace('/', '-')
+    print(maker)
     fileName = maker + '-' + str(now.date()) + '.csv'
 
     carFile = open(fileName, 'w', newline="")

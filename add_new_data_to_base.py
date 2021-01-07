@@ -4,8 +4,8 @@ import pandas as pd
 import math
 
 makerlist = ['audi-a3', 'audi-a4', 'audi-a5', 'audi-a6', 'Honda', 'Hyundai', 'Toyota']
-previous_data = '2020-09-01'
-data = '2020-09-07'
+previous_data = '2021-01-03'
+data = '2021-01-04'
 
 old_carlist = []
 try:
@@ -70,7 +70,6 @@ for maker in makerlist:
 
             carlist.append(car)
 print(carlist[0])
-
 
 id_new_carlist = []
 for car in carlist:
