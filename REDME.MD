@@ -8,5 +8,3 @@
 **Launching the app:**
 - we run the application using the manage.py file
 
-**Application page:**
-- https://samochody.herokuapp.com/
